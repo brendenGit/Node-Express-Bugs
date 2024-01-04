@@ -67,8 +67,10 @@ class User {
     const user = result.rows[0];
 
     if (user && (await bcrypt.compare(password, user.password))) {
+      console.log('entered valid auth');
       return user;
     } else {
+      console.log('entered invalid auth');
       throw new ExpressError('Cannot authenticate', 401);
     }
   }
