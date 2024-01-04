@@ -113,6 +113,13 @@ describe("GET /users/[username]", function() {
     expect(response.statusCode).toBe(401);
   });
 
+  test("should return 404 if user not found", async function() {
+    const response = await request(app)
+      .get("/users/notReal")
+      .send({ _token: tokens.u1 });
+    expect(response.statusCode).toBe(404);
+  });
+
   test("should return data on u1", async function() {
     const response = await request(app)
       .get("/users/u1")
@@ -157,11 +164,27 @@ describe("PATCH /users/[username]", function() {
     });
   });
 
+  test("should patch data if being edited by user of that username", async function() {
+    const response = await request(app)
+      .patch("/users/u1")
+      .send({ _token: tokens.u1, first_name: "new-fn1" });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.user).toEqual({
+      username: "u1",
+      first_name: "new-fn1",
+      last_name: "ln1",
+      email: "email1",
+      phone: "phone1",
+      admin: false,
+      password: expect.any(String)
+    });
+  });
+
   test("should disallowing patching not-allowed-fields", async function() {
     const response = await request(app)
       .patch("/users/u1")
       .send({ _token: tokens.u1, admin: true });
-    expect(response.statusCode).toBe(401);
+    expect(response.statusCode).toBe(400);
   });
 
   test("should return 404 if cannot find", async function() {

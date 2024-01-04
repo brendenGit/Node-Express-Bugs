@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "first_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 75
+        },
+        "last_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 75
+        },
+        "phone": {
+            "type": "string",
+            "maxLength": 15
+        },
+        "email": {
+            "type": "string"
+        }
+    },
+    "additionalProperties": false,
+    "required": []
+}
